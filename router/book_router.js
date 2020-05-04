@@ -5,13 +5,15 @@ const books = require('../model/books');
 router.get('/books', showBookList);
 router.get('/Books/:bookId', showBookDetail);
 router.post('/books', addBook);
+router.delete('/books/:bookId', deleteBook);
+
 
 module.exports = router;
 
 function showBookList(req, res) {
     const bookList = books.getBookList();
-    const result = { data:bookList, count:bookList.length };
-    res.send(result);
+    const obj = { count:bookList.length,data:bookList, };
+    res.send(obj);
 }
 
 
@@ -52,3 +54,9 @@ async function addBook(req, res) {
         res.status(500).send(error.msg);
     }
 }
+
+function deleteBook(req,res) {
+    console.log('delete request');
+    res.send({msg: 'Delete Request success'});
+}
+    

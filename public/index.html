@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+<head>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+   $(document).ready(function() {
+      console.log('ready!');
+   });   
+
+   function resolveItems() {
+      $.getJSON('/books', function(data, status, xhr) {
+         console.log('status :', status);
+         console.log('count :', data.count);
+         const items = data.data;
+         console.log(items);
+         for(item of items) {
+            $("#books").append('<a href="javascript:bookDetail('+item.id+')"><li>'+'title : '+item.title + '<br>artist :'+ item.artist + '<br>synopsis :'+ item.synopsis + '</li></a>');
+         }
+      });
+   }
+
+   function sendPutRequest() {
+      $.ajax({
+         url : '/books',
+         type : 'put',
+         data : 'name1=value1&name2=value2',
+         success : function(data) {
+            console.log('ajax put request/response', data);
+            alert(data.msg);
+         }
+      });
+   }
+   function sendDeleteRequest() {
+      $.ajax({
+         url : '/books/2',
+         type : 'delete',         
+         success : function(data) {
+            console.log('ajax delete request/response', data);
+            alert(data.msg);
+         }
+      });
+   }   
+
+   function bookDetail(id) {
+      $.ajax({
+         url : '/books/'+id,
+         type : 'get',
+         data : 'name1=value1&name2=value2',
+         success : function(data) {
+            console.log('ajax put request/response', data);
+            alert(data.price+'원');
+         }
+      });
+   }
+</script>
+
+</head>
+
+<body>
+<h1>Balls</h1>
+<ul id="books">
+</ul>
+<div>
+   <button onclick="resolveItems()">Get 요청</button>
+   <button onclick="sendPutRequest()">Put 요청 테스트</button>
+   <button onclick="sendDeleteRequest()">Delete 요청 테스트</button>
+</div>
+</body>
+</html>
