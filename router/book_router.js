@@ -12,7 +12,7 @@ module.exports = router;
 
 function showBookList(req, res) {
     const bookList = books.getBookList();
-    const obj = { count:bookList.length,data:bookList, };
+    const obj = {data:bookList, };
     res.send(obj);
 }
 
@@ -55,8 +55,18 @@ async function addBook(req, res) {
     }
 }
 
-function deleteBook(req,res) {
+async function deleteBook(req,res) {
     console.log('delete request');
     res.send({msg: 'Delete Request success'});
+    try {
+        const bookId = req.params.bookId;
+        console.log('bookId : ', bookId);
+        const info = await books.deleteBook(bookId);
+        res.send(info);
+    }
+    catch ( error ) {
+        console.log('Can not find, 404');
+        res.status(error.code).send({msg:error.msg});
+    }
 }
     
