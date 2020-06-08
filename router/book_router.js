@@ -11,9 +11,16 @@ router.delete('/books/:bookId', deleteBook);
 module.exports = router;
 
 function showBookList(req, res) {
+    const id = req.session.userid;
+    if(id){
     const bookList = books.getBookList();
     const obj = {data:bookList, };
     res.send(obj);
+    }
+    else{
+        console.log('error');
+        res.sendStatus(401);
+    }
 }
 
 
